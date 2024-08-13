@@ -210,7 +210,12 @@ class PegasusExporter(Exporter):
 		for asset_type in media_copied:
 			if asset_type != "box3d":
 				asset_path = str(media_copied[asset_type])
-				asset_path = asset_path[asset_path.index("media/"):]
+				# Cut off all parts of path before media/
+				media_folder_index = asset_path.find("/media/")
+				if media_folder_index == -1:
+					# Handle windows-style paths (which use backslashes)
+					media_folder_index = asset_path.index("\\media\\")
+				asset_path = asset_path[media_folder_index + 1:]
 
 				meta_block[f"assets.{asset_type}"] = asset_path
 

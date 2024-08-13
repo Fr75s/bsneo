@@ -90,32 +90,18 @@ def main(page: ft.Page):
 
 	def change_page_navbar(e):
 		page_idx = e.control.selected_index
-		try:
-			if page_idx == 0 and not isinstance(page.controls[0], MainScreen):
-				print("Switching To Scrape")
-				page.controls = [MainScreen(page)]
-				page.floating_action_button = ft.FloatingActionButton(icon=ft.icons.ADD, on_click=open_new_page, bgcolor=ft.colors.PRIMARY, foreground_color=ft.colors.BLACK)
-			elif page_idx == 1 and not isinstance(page.controls[0], ExportScreen):
-				print("Switching To Export")
-				page.controls = [ExportScreen(lambda _: page.update(), check_export_permission)]
-				page.floating_action_button = None
-			elif page_idx == 2  and not isinstance(page.controls[0], SettingsScreen):
-				print("Switching To Settings")
-				page.controls = [SettingsScreen()]
-				page.floating_action_button = None
-		except Exception as e:
-			def close(e):
-				page.close(dlg)
-			dlg = ft.AlertDialog(
-				modal=True,
-				title=ft.Text("Error Opening Page"),
-				content=ft.Text(f"{e}"),
-				actions=[
-					ft.TextButton("Ok", on_click=close),
-				],
-			)
-			page.add(dlg)
-			page.open(dlg)
+		if page_idx == 0 and not isinstance(page.controls[0], MainScreen):
+			print("Switching To Scrape")
+			page.controls = [MainScreen(page)]
+			page.floating_action_button = ft.FloatingActionButton(icon=ft.icons.ADD, on_click=open_new_page, bgcolor=ft.colors.PRIMARY, foreground_color=ft.colors.BLACK)
+		elif page_idx == 1 and not isinstance(page.controls[0], ExportScreen):
+			print("Switching To Export")
+			page.controls = [ExportScreen(lambda _: page.update(), check_export_permission)]
+			page.floating_action_button = None
+		elif page_idx == 2  and not isinstance(page.controls[0], SettingsScreen):
+			print("Switching To Settings")
+			page.controls = [SettingsScreen()]
+			page.floating_action_button = None
 
 		page.update()
 

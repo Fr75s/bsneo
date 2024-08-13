@@ -6,7 +6,10 @@ class DropdownListTile(ft.ResponsiveRow):
 	def set_dropdown_content(self, content: list[ft.dropdown.Option]):
 		print("Setting Dropdown")
 		self.dropdown.options = content
-		self.dropdown.value = content[0].key
+		if len(content) > 0:
+			self.dropdown.value = content[0].key
+		else:
+			self.dropdown.value = None
 
 	def __init__(self, title: str, leading_icon: ft.Icon, dropdown_options: list[ft.dropdown.Option]=[], dropdown_on_change: Callable=None):
 		super().__init__()

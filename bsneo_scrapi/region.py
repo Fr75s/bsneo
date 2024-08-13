@@ -47,7 +47,7 @@ def get_preferred_regions(region_code: str) -> list[str]:
 	# No preference
 	if region_code == "none":
 		prefs = ["world", "none"]
-		for region in regions[2:]:
+		for region in REGIONS[2:]:
 			prefs.append(region)
 
 	# North America

@@ -31,13 +31,13 @@ def PATH_META(pid: str):
 # Check if base directory exists, create if it doesn't
 def check_base_path():
 	if not(PATH_BASE.exists()):
-		PATH_BASE.mkdir()
+		PATH_BASE.mkdir(parents = True)
 
 # Check if the config file's directory exists, create if it doesn't
 def check_config_path():
 	CFG_DIR = PATH_CONFIG.parent
 	if not(CFG_DIR.exists()):
-		CFG_DIR.mkdir()
+		CFG_DIR.mkdir(parents = True)
 
 # Check if directory exists, create if it doens't
 def check_path(path: Path):

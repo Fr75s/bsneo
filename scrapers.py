@@ -256,7 +256,7 @@ class ScraperScreen(ft.ListView):
 							# Back Button
 							ft.IconButton(
 								icon = ft.icons.ARROW_BACK,
-								icon_color = ft.colors.WHITE,
+								icon_color = ft.colors.ON_SURFACE,
 								icon_size = 30,
 								tooltip = "Back",
 								on_click = pop
@@ -280,7 +280,7 @@ class ScraperScreen(ft.ListView):
 							),
 							ft.IconButton(
 								icon = ft.icons.CLEAR,
-								icon_color = ft.colors.WHITE,
+								icon_color = ft.colors.ON_SURFACE,
 								icon_size = 30,
 								tooltip = "Dismiss Scraper",
 								on_click = self.dismiss_scraper,
@@ -684,7 +684,7 @@ class NewScraperScreen(ft.SafeArea):
 				controls=[
 					ft.IconButton(
 						icon = ft.icons.ARROW_BACK,
-						icon_color = ft.colors.WHITE,
+						icon_color = ft.colors.ON_SURFACE,
 						icon_size = 30,
 						tooltip = "Back",
 						on_click = view_pop

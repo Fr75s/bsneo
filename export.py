@@ -54,7 +54,8 @@ class ExportConsoleListTile(DropdownListTile):
 		# 	self.trailing.value = systems[0].key
 
 		# Set "system" option entry
-		ExportOptionsContainer.set_entry("system", systems[0].key)
+		if len(systems) > 0:
+			ExportOptionsContainer.set_entry("system", systems[0].key)
 		ExportScreen.update_export_status()
 
 	# Change the currently chosen system

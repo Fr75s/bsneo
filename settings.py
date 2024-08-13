@@ -150,7 +150,7 @@ def load_setting_file() -> dict:
 		print("Settings file does not exist. Initializing...")
 		check_config_path()
 		with open(PATH_CONFIG, "w") as cfg_file:
-			cfg_file.write(json.dumps(SettingContainer.get_all_settings))
+			cfg_file.write(json.dumps(SettingContainer.get_all_settings()))
 
 	return {}
 
