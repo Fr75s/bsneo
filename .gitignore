@@ -1,0 +1,7 @@
+__pycache__/
+bsneo_scrapi/__pycache__/
+build/
+runner.py
+requirements.txt.bak
+env/
+pyvenv.cfg
