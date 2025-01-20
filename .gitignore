@@ -3,5 +3,6 @@ bsneo_scrapi/__pycache__/
 build/
 runner.py
 requirements.txt.bak
-env/
+.venv/
 pyvenv.cfg
+.git/

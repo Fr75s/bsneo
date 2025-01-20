@@ -1,0 +1,16 @@
+[project]
+name = "bsneo"
+version = "1.0.1"
+description = ""
+
+[tool.flet]
+org = "com.fr75s"
+build_number = 2
+flutter.dependencies = ["flet_permission_handler"]
+
+[tool.flet.splash]
+color = "#F2F6FF"
+dark_color = "#16171A"
+
+[tool.flet.android.permission]
+"android.permission.MANAGE_EXTERNAL_STORAGE" = true

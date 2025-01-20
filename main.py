@@ -10,9 +10,9 @@ class MainNavbar(ft.NavigationBar):
 	def __init__(self, initial_selected, on_change):
 		super().__init__()
 		self.destinations = [
-			ft.NavigationBarDestination(icon=ft.icons.DOWNLOADING, label="Scrape"),
-			ft.NavigationBarDestination(icon=ft.icons.OPEN_IN_NEW, label="Export"),
-			ft.NavigationBarDestination(icon=ft.icons.SETTINGS, label="Settings"),
+			ft.NavigationBarDestination(icon=ft.Icons.DOWNLOADING, label="Scrape"),
+			ft.NavigationBarDestination(icon=ft.Icons.OPEN_IN_NEW, label="Export"),
+			ft.NavigationBarDestination(icon=ft.Icons.SETTINGS, label="Settings"),
 		]
 		self.selected_index = initial_selected
 		self.on_change = on_change
@@ -20,6 +20,9 @@ class MainNavbar(ft.NavigationBar):
 def main(page: ft.Page):
 	page.title = "bsneo"
 	page.adaptive = True
+
+	ph = ft.PermissionHandler()
+	page.overlay.append(ph)
 
 	def view_pop(e):
 		page.views.pop()
@@ -55,29 +58,30 @@ def main(page: ft.Page):
 	# Check if the system has allowed writes to storage.
 	# This is required for proper export function.
 	def check_export_permission(export_options):
-		if page.platform in (ft.PagePlatform.ANDROID, ft.PagePlatform.IOS):
-			# Add new PermissionHandler
-			ph = ft.PermissionHandler()
-			page.overlay.append(ph)
-			page.update()
+		storage_permission = ft.PermissionType.MANAGE_EXTERNAL_STORAGE
 
+		if page.platform in (ft.PagePlatform.ANDROID, ft.PagePlatform.IOS):
 			# Check Storage Permission
-			storage_pcheck = ph.check_permission(ft.PermissionType.STORAGE)
+			storage_pcheck = ph.check_permission(storage_permission)
 			print(f"Export Storage Permission: {storage_pcheck}")
 			if storage_pcheck == ft.PermissionStatus.GRANTED:
 				# Storage Permission Granted, continue
 				run_export(export_options)
 			elif storage_pcheck == ft.PermissionStatus.DENIED:
 				# Storage Permission Denied, ask for permission.
-				storage_preq = ph.request_permission(ft.PermissionType.STORAGE)
+				print(f"Requesting Permission ({storage_permission})...")
+				storage_preq = ph.request_permission(storage_permission)
+				print(storage_preq)
 				if storage_preq == ft.PermissionStatus.GRANTED:
 					# Permission Granted.
 					run_export(export_options)
+				else:
+					# Storage Permission firmly denied, do not ask for permission.
+					page.overlay.append(ft.SnackBar(ft.Text(f"Export Failed: Permission Denied."), open=True))
+					page.update()
 		else:
 			# No Permission Needed, Continue Straight to Export
 			run_export(export_options)
-
-		# Storage Permission firmly denied, do not ask for permission.
 
 	def open_new_page(e):
 		print(vars(e))
@@ -93,7 +97,7 @@ def main(page: ft.Page):
 		if page_idx == 0 and not isinstance(page.controls[0], MainScreen):
 			print("Switching To Scrape")
 			page.controls = [MainScreen(page)]
-			page.floating_action_button = ft.FloatingActionButton(icon=ft.icons.ADD, on_click=open_new_page, bgcolor=ft.colors.PRIMARY, foreground_color=ft.colors.BLACK)
+			page.floating_action_button = ft.FloatingActionButton(icon=ft.Icons.ADD, on_click=open_new_page, bgcolor=ft.Colors.PRIMARY, foreground_color=ft.Colors.BLACK)
 		elif page_idx == 1 and not isinstance(page.controls[0], ExportScreen):
 			print("Switching To Export")
 			page.controls = [ExportScreen(lambda _: page.update(), check_export_permission)]
@@ -110,12 +114,12 @@ def main(page: ft.Page):
 	page.on_view_pop = view_pop
 
 	# Scrape Screen FAB
-	page.floating_action_button = ft.FloatingActionButton(icon=ft.icons.ADD, on_click=open_new_page, bgcolor=ft.colors.PRIMARY, foreground_color=ft.colors.BLACK)
+	page.floating_action_button = ft.FloatingActionButton(icon=ft.Icons.ADD, on_click=open_new_page, bgcolor=ft.Colors.PRIMARY, foreground_color=ft.Colors.BLACK)
 
 	# Theming
 	page.theme = ft.Theme(
 		system_overlay_style=ft.SystemOverlayStyle(
-			system_navigation_bar_color=ft.colors.SECONDARY_CONTAINER,
+			system_navigation_bar_color=ft.Colors.SECONDARY_CONTAINER,
 			system_navigation_bar_divider_color="#00000000"
 		)
 	)

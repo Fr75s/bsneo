@@ -255,8 +255,8 @@ class ScraperScreen(ft.ListView):
 						controls=[
 							# Back Button
 							ft.IconButton(
-								icon = ft.icons.ARROW_BACK,
-								icon_color = ft.colors.ON_SURFACE,
+								icon = ft.Icons.ARROW_BACK,
+								icon_color = ft.Colors.ON_SURFACE,
 								icon_size = 30,
 								tooltip = "Back",
 								on_click = pop
@@ -279,8 +279,8 @@ class ScraperScreen(ft.ListView):
 								size=22,
 							),
 							ft.IconButton(
-								icon = ft.icons.CLEAR,
-								icon_color = ft.colors.ON_SURFACE,
+								icon = ft.Icons.CLEAR,
+								icon_color = ft.Colors.ON_SURFACE,
 								icon_size = 30,
 								tooltip = "Dismiss Scraper",
 								on_click = self.dismiss_scraper,
@@ -349,8 +349,8 @@ class ScraperListEntry(ft.Container):
 
 		# Finished Icon
 		self.status_icon: ft.Icon = ft.Icon(
-			name=ft.icons.CHECK,
-			color=ft.colors.SURFACE_VARIANT,
+			name=ft.Icons.CHECK,
+			color=ft.Colors.SECONDARY,
 			size=30,
 		)
 
@@ -434,7 +434,7 @@ class ScraperList(ft.ListView):
 			# Finished Scraping
 			case "finished":
 				list_entry.pbar.value = 1.0
-				list_entry.status_icon.color = ft.colors.SURFACE_TINT
+				list_entry.status_icon.color = ft.Colors.SURFACE_TINT
 
 		# Update Scraper Screen (if set and if it matches the scraper being updated)
 		if self.current_scraper_screen != None and self.current_scraper_screen.scraper.scraper_id == scraper_id:
@@ -544,7 +544,7 @@ class MainScreen(ft.SafeArea):
 # Custom UI Component for the system select ListTile in NewScraperScreen.
 class NewScraperSystem(DropdownListTile):
 	def __init__(self, set_system):
-		super().__init__("System", ft.Icon(ft.icons.GAMEPAD), [], lambda e: set_system(e.control.value))
+		super().__init__("System", ft.Icon(ft.Icons.GAMEPAD), [], lambda e: set_system(e.control.value))
 
 		# Get list of systems as Dropdown Options
 		system_list = []
@@ -653,10 +653,10 @@ class NewScraperScreen(ft.SafeArea):
 		MainScreen.slist.add_scraper(NewScraperScreen.current_config)
 
 	# Scrape Action Button
-	action_button = ft.FilledButton(
+	action_button = ft.OutlinedButton(
 		"Begin Scraping",
 		disabled=True,
-		icon=ft.icons.DOWNLOADING,
+		icon=ft.Icons.DOWNLOADING,
 		height=50,
 		on_click=add_scraper,
 	)
@@ -683,8 +683,8 @@ class NewScraperScreen(ft.SafeArea):
 				spacing=10,
 				controls=[
 					ft.IconButton(
-						icon = ft.icons.ARROW_BACK,
-						icon_color = ft.colors.ON_SURFACE,
+						icon = ft.Icons.ARROW_BACK,
+						icon_color = ft.Colors.ON_SURFACE,
 						icon_size = 30,
 						tooltip = "Back",
 						on_click = view_pop
@@ -702,7 +702,7 @@ class NewScraperScreen(ft.SafeArea):
 			ft.ListTile(
 				title=ft.Text("Files"),
 				height=50,
-				leading=ft.Icon(ft.icons.FOLDER),
+				leading=ft.Icon(ft.Icons.FOLDER),
 				trailing = self.file_count_label,
 			),
 			# File Select Buttons
@@ -711,19 +711,19 @@ class NewScraperScreen(ft.SafeArea):
 					# Choose Folder
 					ft.OutlinedButton(
 						text="Choose Folder",
-						icon=ft.icons.FOLDER,
+						icon=ft.Icons.FOLDER,
 						on_click=lambda _: scraper_fp.get_directory_path(),
 					),
 					# Choose Files
 					ft.OutlinedButton(
 						text="Choose Files",
-						icon=ft.icons.FILE_COPY,
+						icon=ft.Icons.FILE_COPY,
 						on_click=lambda _: scraper_fp.pick_files(allow_multiple=True),
 					),
 					# Clear Files
 					ft.OutlinedButton(
 						text="Clear Files",
-						icon=ft.icons.CLEAR,
+						icon=ft.Icons.CLEAR,
 						on_click=lambda _: self.reset_files(),
 					),
 				],
@@ -736,7 +736,7 @@ class NewScraperScreen(ft.SafeArea):
 			# Scraper Select ListTile
 			DropdownListTile(
 				"Scraper",
-				ft.Icon(ft.icons.LANGUAGE),
+				ft.Icon(ft.Icons.LANGUAGE),
 				[
 					ft.dropdown.Option(key="lb", text="LaunchBox")
 				],

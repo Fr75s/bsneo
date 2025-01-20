@@ -75,7 +75,7 @@ class ExportConsoleListTile(DropdownListTile):
 		# 	width=250,
 		# )
 
-		super().__init__("System", ft.Icon(ft.icons.GAMEPAD))
+		super().__init__("System", ft.Icon(ft.Icons.GAMEPAD))
 
 		self.dropdown.on_change = self.choose_system
 		self.update_systems(update_page)
@@ -98,7 +98,7 @@ class ExportDestListTile(ft.ListTile):
 		# Set standard properties
 		self.title = ft.Text("Destination")
 		self.height = 50
-		self.leading = ft.Icon(ft.icons.FOLDER)
+		self.leading = ft.Icon(ft.Icons.FOLDER)
 
 		# Handle File Picker + Update
 		self.on_click = on_click
@@ -115,10 +115,10 @@ class ExportScreen(ft.SafeArea):
 	)
 
 	# Export Action Button
-	export_button = ft.FilledButton(
+	export_button = ft.OutlinedButton(
 		"Export Now",
 		disabled=True,
-		icon=ft.icons.OPEN_IN_NEW,
+		icon=ft.Icons.OPEN_IN_NEW,
 		height=50
 	)
 
@@ -187,7 +187,7 @@ class ExportScreen(ft.SafeArea):
 			# Set Format
 			DropdownListTile(
 				"Export Format",
-				ft.Icon(ft.icons.DESCRIPTION),
+				ft.Icon(ft.Icons.DESCRIPTION),
 				[
 					ft.dropdown.Option(key="pf", text="Pegasus")
 				],

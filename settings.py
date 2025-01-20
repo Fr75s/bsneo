@@ -109,8 +109,8 @@ class SettingsScreen(ft.SafeArea):
 				"General",
 				size=20,
 			),
-			Setting("bool", "video_dl", "Download Videos", ft.icons.VIDEOCAM),
-			Setting("bool", "rescrape_existing", "Re-Scrape Already Scraped", ft.icons.REFRESH),
+			Setting("bool", "video_dl", "Download Videos", ft.Icons.VIDEOCAM),
+			Setting("bool", "rescrape_existing", "Re-Scrape Already Scraped", ft.Icons.REFRESH),
 			ft.Divider(),
 
 			# Region Settings
@@ -120,12 +120,12 @@ class SettingsScreen(ft.SafeArea):
 			),
 			DropdownListTile(
 				"Region",
-				ft.Icon(ft.icons.PUBLIC),
+				ft.Icon(ft.Icons.PUBLIC),
 				[ft.dropdown.Option(key=region, text=region.upper()) for region in REGIONS],
 				lambda e: self.change_setting("region", e.control.value)
 			),
-			#Setting("list", "region", "Region", ft.icons.PUBLIC, {"list": REGIONS}),
-			Setting("bool", "strict_region", "Strict Region Filter", ft.icons.LOCK),
+			#Setting("list", "region", "Region", ft.Icons.PUBLIC, {"list": REGIONS}),
+			Setting("bool", "strict_region", "Strict Region Filter", ft.Icons.LOCK),
 		],
 		spacing = 8,
 		padding = ft.padding.symmetric(horizontal=4),
