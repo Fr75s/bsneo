@@ -40,6 +40,5 @@ The following Export formats are also currently available:
 
 The following changes to bsneo are planned for the future. Stay tuned.
 
-- Android version
 - ScreenScraper support
 - File Management in app

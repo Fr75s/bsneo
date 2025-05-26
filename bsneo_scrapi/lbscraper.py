@@ -130,8 +130,10 @@ class LBScraper(Scraper):
 	def get_metadata(self, content: str) -> dict:
 		# Convert to HTML ETree
 		page_parser = None
+		data = None
 		try:
 			page_parser = BeautifulSoup(content, "html.parser")
+			data = json.loads(page_parser.find("script", id="__NUXT_DATA__").text)
 		except Exception as e:
 			self.output(f"Could not convert content to BeautifulSoup: {e}", 1)
 			return None
@@ -141,22 +143,45 @@ class LBScraper(Scraper):
 		# Filename & Platform
 		entry["platform"] = self.platform.pid
 
+		# Get map from data indices to data points
+		details_map = {}
+		for i in range(len(data)):
+			if (type(data[i]) == list and len(data[i]) == 2 and data[i][0] == "GameDetailsEntity"):
+				details_map = data[data[i][1]]
+				break
+
+		# Gets a data point from details_map
+		def get_data_item(name: str):
+			return data[details_map[name]]
+
+		# Gets a data point of list type from details_map
+		def get_data_item_list(name: str):
+			indices = get_data_item(name)
+			datas = []
+			for i in indices:
+				datas.append(data[data[i]["name"]])
+			return datas
+
 		# Get title
-		entry["name"]: str = page_parser.find("section", class_="heroSection").find("h1").text
+		entry["name"]: str = get_data_item("name")
+		#page_parser.find("h1").text
 		#page_tree.xpath("//section[@class='heroSection']//h1/text()")[0]
 		entry["clean_name"]: str = str_to_clean(entry["name"])
 
 		# Upper Fields
 		try:
-			entry["rating"] = float(page_parser.find("span", id="yourRatingShort").text) / 5.0
+			entry["rating"] = float(get_data_item("communityRating")) / 5.0
+			#float(page_parser.find("span", id="yourRatingShort").text) / 5.0
 		except:
 			self.output(f"No Rating for {entry['name']}", -1)
 		try:
-			entry["release"] = date_to_iso(page_parser \
-				.find("div", class_=re.compile("infoCards")) \
-				.find("div", class_="cardHeading") \
-				.find("span", string="Release Date") \
-				.parent.parent.h6.text)
+			entry["release"] = get_data_item("releaseDate")
+
+			#date_to_iso(page_parser \
+			#	.find("div", class_=re.compile("infoCards")) \
+			#	.find("div", class_="cardHeading") \
+			#	.find("span", string="Release Date") \
+			#	.parent.parent.h6.text)
 			#date_to_iso(page_tree.xpath("//div[contains(@class, 'infoCards')]//div[@class='cardHeading']/span[contains(.,'Release Date')]/../../h6/text()")[0])
 		except:
 			self.output(f"No Release Date for {entry['name']}", -1)
@@ -164,23 +189,27 @@ class LBScraper(Scraper):
 		# Lower Fields
 		for field in ("Genres", "Developers", "Publishers"):
 			try:
-				entry[field.lower()] = [tag.text for tag in page_parser.find("h5", string=f"{field}").parent.find_all("a")]
+				entry[field.lower()] = get_data_item_list(f"game{field}")
+				#[tag.text for tag in page_parser.find("h5", string=f"{field}").parent.find_all("a")]
 				#page_tree.xpath(f"//div[@class='detailCard']/h5[contains(.,'{field}')]/../a/text()")
 			except:
 				self.output(f"No {field} for {entry['name']}", -1)
 
 		try:
-			entry["desc"] = page_parser \
-				.find("h5", string="Overview") \
-				.parent.find("p").text
+			entry["desc"] = get_data_item("overview")
+			#page_parser \
+			#	.find("h5", string="Overview") \
+			#	.parent.find("p").text
 			#page_tree.xpath("//div[@class='detailCard']/h5[contains(.,'Overview')]/../p/text()")[0]
 			entry["desc"] = entry["desc"].replace("\r\n", "\n")
 		except (IndexError, AttributeError):
 			self.output(f"No Description for {entry['name']}", -1)
 		try:
-			entry["video"] = page_parser \
-				.find("h5", string="Video") \
-				.parent.find("a").text
+			entry["video"] = get_data_item("videoUrl")
+
+			#page_parser \
+			#	.find("h5", string="Video") \
+			#	.parent.find("a").text
 			#page_tree.xpath("//div[@class='detailCard']/h5[contains(.,'Video')]/../a/text()")[0]
 		except (IndexError, AttributeError):
 			self.output(f"No Video for {entry['name']}", -1)

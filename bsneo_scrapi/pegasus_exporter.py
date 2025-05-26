@@ -273,7 +273,7 @@ class PegasusExporter(Exporter):
 
 		# Get existing data
 		existing_meta: list[dict] = self.read_existing_metadata(dest)
-		if existing_meta == None:
+		if existing_meta == None or existing_meta == []:
 			# No existing data
 			self.output("No existing data found.", 0)
 
